@@ -100,10 +100,22 @@ if len(sys.argv) > 1 and os.path.exists(sys.argv[1]):
                 g.setPath(os.path.join(root, file))
                 hookList.update( g.process())
 
-    fileName = 'Drupal8Snippets.json'
-    pathOut = ''
-    if len(sys.argv) > 2 and os.path.exists(sys.argv[1]):
-        pathOut = sys.argv[1]
+    fileName = 'snippets.json'
+    pathOut = '.'
+    if len(sys.argv) > 2 and os.path.exists(sys.argv[2]):
+        pathOut = sys.argv[2]
+    else:
+        while True:
+            query = input("Output path doesn't exist, do you want to create it? [Y,N]")
+            answer = query[0].lower()
+            if query == '' or not answer in ['y','n']:
+                print('Please answer with yes or no!')
+            else:
+                break
+        
+        if answer == 'y':
+            pathOut = sys.argv[2]
+            os.makedirs(pathOut)
 
     with open(pathOut+fileName, 'w') as outfile:
         json.dump(hookList, outfile, sort_keys=True,indent=4, separators=(',', ': '))
